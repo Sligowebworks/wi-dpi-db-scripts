@@ -65,9 +65,8 @@ DetailKey, Year,
 'DaysSuspDurationLong' = sum(case Duration when 'L' then Days else 0 end),
 'DaysSuspDurationShort' = sum(case Duration when 'S' then Days else 0 end),
 'DaysSuspDurationTotal' = sum(case Duration when 'L' then Days when 'S' then Days else 0 end),
--- MZD: Suspect:
---'DaysExpDurationTotal' = sum(case when (rtrim(Duration) = '' or Duration is null) then Days else 0 end),
-'DaysExpDurationTotal' = sum(case Duration when 'L' then Days when 'S' then Days else 0 end),
+
+'DaysExpDurationTotal' = sum(case when (rtrim(Duration) = '' or Duration is null) then Days else 0 end),
 
 'DaysAllTotal' = sum(Days)
 
