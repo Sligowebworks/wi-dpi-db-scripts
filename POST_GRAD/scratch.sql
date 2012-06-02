@@ -1,8 +1,17 @@
 use wisconsin;
 
 
-SELECT RaceCode, Shortname, Year, * FROM RaceYear where year IN (2010, 2011)
+SELECT RaceCode, Shortname, Year, * FROM RaceYear where year IN (2010, 2011) AND RaceCOde IN (0,1,2,3)
 ORDER BY sHORTName, Year
+
+-- from create-POST_GRAD_INTENT_NRAdj in import	
+select * from 
+(SELECT distinct [YEAR] FROM [POST_GRAD_INTENT]) year, 
+(SELECT distinct [FULLKEY] FROM [POST_GRAD_INTENT]) fullkey, 
+(SELECT distinct [RACE] FROM [POST_GRAD_INTENT]) race,  
+(SELECT distinct [SEX] FROM [POST_GRAD_INTENT]) sex,
+(SELECT 'NR' as 'INTENTCODE') intentcode
+
 
 
 SELECT DISTINCT year, racelabel, racecode from v_TruancySchoolDistState
