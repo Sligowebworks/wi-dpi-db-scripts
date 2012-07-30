@@ -1,4 +1,3 @@
--- this is POST_GRAD_INTENT_TableMorphingNRAdj5BeloitFixD.sql
 
 if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[POST_GRAD_INTENT_NRAdj]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [dbo].[POST_GRAD_INTENT_NRAdj]
@@ -7,35 +6,25 @@ GO
 
 
 SELECT 
---*, 
---'year' = (case al.[YEAR] when null then NR.[YEAR] else al.[YEAR] end),
---'fullkey' = (case al.[fullkey] when null then NR.[fullkey] else al.[fullkey] end),
---'RACE' = (case al.[RACE] when null then NR.[RACE] else al.[RACE] end),
---'SEX' = (case al.[SEX] when null then NR.[SEX] else al.[SEX] end),
---'year' = (case NR.[YEAR] when null then al.[YEAR] else NR.[YEAR] end),
---'fullkey' = (case NR.[fullkey] when null then al.[fullkey] else NR.[fullkey] end),
---'RACE' = (case NR.[RACE] when null then al.[RACE] else NR.[RACE] end),
---'SEX' = (case NR.[SEX] when null then al.[SEX] else NR.[SEX] end),
 'year' = k.[YEAR], 
 'fullkey' = k.[fullkey], 
 'RACE' = k.[RACE], 
 'SEX' = k.[SEX], 
---'INTENTCODE' = (case al.[INTENTCODE] when null then NR.[INTENTCODE] else al.[INTENTCODE] end),
 'INTENTCODE' = 'NR', 
 'NRGRADS' = isnull([GRADS],0), 
 'ALDiff' = isnull([ALDiff],0), 
 'NRAdj' = isnull([GRADS],0) + isnull([ALDiff],0)
 
-into POST_GRAD_INTENT_NRAdj
+INTO POST_GRAD_INTENT_NRAdj
 
-from 
+FROM 
 
 (
-select * from 
-(SELECT distinct [YEAR] FROM [POST_GRAD_INTENT]) year, 
-(SELECT distinct [FULLKEY] FROM [POST_GRAD_INTENT]) fullkey, 
-(SELECT distinct [RACE] FROM [POST_GRAD_INTENT]) race,  
-(SELECT distinct [SEX] FROM [POST_GRAD_INTENT]) sex,
+SELECT * from 
+(SELECT DISTINCT [YEAR] FROM [POST_GRAD_INTENT]) year, 
+(SELECT DISTINCT [FULLKEY] FROM [POST_GRAD_INTENT]) fullkey, 
+(SELECT DISTINCT [RACE] FROM [POST_GRAD_INTENT]) race,  
+(SELECT DISTINCT [SEX] FROM [POST_GRAD_INTENT]) sex,
 (SELECT 'NR' as 'INTENTCODE') intentcode
 --where fullkey = '02041303XXXX' 
 --order by YEAR, FULLKEY, RACE, SEX, INTENTCODE 
