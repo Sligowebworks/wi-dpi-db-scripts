@@ -23,7 +23,12 @@ SELECT
 , K.[ConferenceKey]
 , K.[Race]
 , K.[RaceLabel]
-, K.RaceShortLabel
+, [RaceShortLabel] = -- Make historic labels consistent for Graph (sorting)
+	CASE K.[RaceShortLabel]
+		WHEN 'Black Not Hisp' THEN 'Black'
+		WHEN 'Hisp' THEN 'Hispanic'
+		ELSE K.[RaceShortLabel]
+	END
 , K.[Sex]
 , K.[SexLabel]
 , [PriorYear] = (cast((K.Year - 1) AS char(4)) + '-' + cast(right(K.Year,2) AS char(4)))
