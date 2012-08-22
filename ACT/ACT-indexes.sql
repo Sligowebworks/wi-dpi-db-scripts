@@ -1,4 +1,5 @@
-
+use wisconsin
+GO
 
  CREATE  UNIQUE  CLUSTERED  INDEX [AllClustered] ON [dbo].[Act_DEPLOY]([Year], [district], [school], [race], [sex], [PupilCount], [English], [Math], [Reading], [Science], [Composite], [fullkey]) WITH  FILLFACTOR = 100 ON [PRIMARY]
 GO
