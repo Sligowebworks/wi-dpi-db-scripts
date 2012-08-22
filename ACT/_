@@ -48,10 +48,9 @@ k.[RaceCode] as 'Race', k.SexCode as 'Sex', k.[District Number] as 'district', k
 
 -- per email exchange with MZD 2012-02-27
 --'PupilCount' = case when rtrim(s.suppressed) = '-10' then '*' when act.Pupilcount = 0 or act.PupilCount is null then '0' when isnull(k.enrollment,'0') < 6 then '*' else isnull(Act.PupilCount,0)  end, 
-'PupilCount' = case when rtrim(s.suppressed) = '-10' then '*' when act.Pupilcount = 0 or act.PupilCount is null then '0' when isnull(k.enrollment,'0') > 0 
-and isnull(k.enrollment,'0') < 6 then '*' else cast(isnull(Act.PupilCount,0) as char) end, 
+'PupilCount' = case when rtrim(s.suppressed) = '-10' then '*' when act.Pupilcount = 0 or act.PupilCount is null then '0' when isnull(k.enrollment,'0') > 0 and isnull(k.enrollment,'0') < 6 then '*' else isnull(Act.PupilCount,0)  end, 
 
-'PupilCountRaw' = cast(isnull(Act.PupilCount,0) as char), 
+'PupilCountRaw' = isnull(Act.PupilCount,0), 
 
 -- jdj: special suppression rule for ACT per Jean email 7/12/02
 -- jdj 2004-09-21 - modifying suppression rules so that district-level ACT scores are not suppressed if the suppression is only due to small schools
@@ -85,8 +84,7 @@ when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and (k.racecode <> '9' 
 when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and k.racecode = '9' and k.sexcode = '9' and 
 (select top 1 a.fullkey from tblPubEnrWWoDisSuppressed e inner join act a on e.year = a.year and e.fullkey = a.fullkey and e.race = a.race and e.gender = a.sex 
 where a.year = act.year and a.district = act.district and a.school <> 'XXXX' and e.grade = '64' and e.race = '9' and e.gender = '9' and rtrim(suppressed) = -10) is not null then '*'  
---else isnull(cast(act.English as char),'--') end,
-else isnull(cast(cast(act.English as numeric(18,6)) as char),'--') end,
+else  isnull(act.English,'--') end,
 
 'Math' = 
 Case when rtrim(s.suppressed) <> '-10' and (act.Pupilcount = '0' or act.PupilCount is null) then '--' when cast(act.Pupilcount as int) < 6 then '*' when rtrim(s.suppressed) = '-10' and isnumeric(k.[School Number]) = 1 then '*'  
@@ -94,8 +92,7 @@ when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and (k.racecode <> '9' 
 when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and k.racecode = '9' and k.sexcode = '9' and 
 (select top 1 a.fullkey from tblPubEnrWWoDisSuppressed e inner join act a on e.year = a.year and e.fullkey = a.fullkey and e.race = a.race and e.gender = a.sex 
 where a.year = act.year and a.district = act.district and a.school <> 'XXXX' and e.grade = '64' and e.race = '9' and e.gender = '9' and rtrim(suppressed) = -10) is not null then '*'  
---else isnull(cast(act.Math as char),'--') end,
-else isnull(cast(cast(act.Math as numeric(18,6)) as char),'--') end,
+else  isnull(act.Math,'--') end,
 
 'Reading' = 
 Case when rtrim(s.suppressed) <> '-10' and (act.Pupilcount = '0' or act.PupilCount is null) then '--' when cast(act.Pupilcount as int) < 6 then '*' when rtrim(s.suppressed) = '-10' and isnumeric(k.[School Number]) = 1 then '*'  
@@ -103,10 +100,7 @@ when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and (k.racecode <> '9' 
 when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and k.racecode = '9' and k.sexcode = '9' and 
 (select top 1 a.fullkey from tblPubEnrWWoDisSuppressed e inner join act a on e.year = a.year and e.fullkey = a.fullkey and e.race = a.race and e.gender = a.sex 
 where a.year = act.year and a.district = act.district and a.school <> 'XXXX' and e.grade = '64' and e.race = '9' and e.gender = '9' and rtrim(suppressed) = -10) is not null then '*'  
---else isnull(act.Reading,'--') end,
---else isnull(cast(act.Reading as char),'--') end,
-else isnull(cast(cast(act.Reading as numeric(18,6)) as char),'--') end,
---else isnull(cast(cast(act.Reading as numeric(18,1)) as char),'--') end,
+else  isnull(act.Reading,'--') end,
 
 'Science' = 
 Case when rtrim(s.suppressed) <> '-10' and (act.Pupilcount = '0' or act.PupilCount is null) then '--' when cast(act.Pupilcount as int) < 6 then '*' when rtrim(s.suppressed) = '-10' and isnumeric(k.[School Number]) = 1 then '*'  
@@ -114,7 +108,7 @@ when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and (k.racecode <> '9' 
 when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and k.racecode = '9' and k.sexcode = '9' and 
 (select top 1 a.fullkey from tblPubEnrWWoDisSuppressed e inner join act a on e.year = a.year and e.fullkey = a.fullkey and e.race = a.race and e.gender = a.sex 
 where a.year = act.year and a.district = act.district and a.school <> 'XXXX' and e.grade = '64' and e.race = '9' and e.gender = '9' and rtrim(suppressed) = -10) is not null then '*'  
-else isnull(cast(cast(act.Science as numeric(18,6)) as char),'--') end,
+else  isnull(act.Science,'--') end,
 
 'Composite' = 
 Case when rtrim(s.suppressed) <> '-10' and (act.Pupilcount = '0' or act.PupilCount is null) then '--' when cast(act.Pupilcount as int) < 6 then '*' when rtrim(s.suppressed) = '-10' and isnumeric(k.[School Number]) = 1 then '*'  
@@ -122,8 +116,18 @@ when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and (k.racecode <> '9' 
 when rtrim(s.suppressed) = '-10' and act.school = 'XXXX' and k.racecode = '9' and k.sexcode = '9' and 
 (select top 1 a.fullkey from tblPubEnrWWoDisSuppressed e inner join act a on e.year = a.year and e.fullkey = a.fullkey and e.race = a.race and e.gender = a.sex 
 where a.year = act.year and a.district = act.district and a.school <> 'XXXX' and e.grade = '64' and e.race = '9' and e.gender = '9' and rtrim(suppressed) = -10) is not null then '*'  
-else isnull(cast(cast(act.Composite as numeric(18,6)) as char),'--') end,
+else  isnull(act.Composite,'--') end,
 
+/*
+'Math' = 
+Case  when act.Pupilcount ='0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' when cast(enr.suppressed as char) = '-10' then '*'  else  isnull(act.Math,'--') end,
+ 'Reading' = 
+Case  when act.Pupilcount ='0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' when cast(enr.suppressed as char) = '-10' then '*'  else  isnull(act.Reading,'--') end,
+ 'Science' =
+Case  when act.Pupilcount = '0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' when cast(enr.suppressed as char) = '-10' then '*'  else  isnull(act.Science,'--') end,
+'Composite' =
+Case  when act.Pupilcount = '0' or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' when cast(enr.suppressed as char) = '-10' then '*'  else  isnull(act.Composite,'--') end,
+*/
 'Enrollment' = isnull(cast(k.enrollment as char(18)),'0') ,
 
 --'Perc Tested' = Case  when act.Pupilcount = 0 or act.PupilCount is null then '0' when enr.enrollment is null or enr.enrollment = 0 then '0'  else cast((cast(act.PupilCount as int)/ (cast(enr.enrollment as float)) *100) as char) end
@@ -153,8 +157,6 @@ or
 
 and k.Agencytype in ('03','04','4C','49','XX')
 
-
-
 UNION ALL
 
 select k.year, k.YearFormatted, k.fullkey, k.agencykey, 
@@ -179,39 +181,20 @@ K.county,
 'Enrollment PreK-12' = 'NA', 'suppressed' = 'NA', 
 --k.AgencyName as Name,
 
-cast(isnull(Act.PupilCount,0) as char) as 'PupilCount', 
-'PupilCountRaw' = cast(isnull(Act.PupilCount,0) as char), 
+isnull(Act.PupilCount,0) as 'PupilCount', 
+'PupilCountRaw' = isnull(Act.PupilCount,0), 
 
 -- jdj: special suppression rule for ACT per Jean email 7/12/02
 'English' = 
-Case when act.Pupilcount = '0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' else  
---isnull(act.English,'--')  
-isnull(cast(cast(act.English as numeric(18,6)) as char),'--') 
-END,
-
+Case when act.Pupilcount = '0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' else  isnull(act.English,'--')  END,
 'Math' = 
-Case when act.Pupilcount = '0'  or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  
---isnull(act.Math,'--')  
-isnull(cast(cast(act.Math as numeric(18,6)) as char),'--') 
-END,
-
+Case when act.Pupilcount = '0'  or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  isnull(act.Math,'--')  END,
  'Reading' = 
-Case when act.Pupilcount = '0' or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  
---isnull(act.Reading,'--')  
-isnull(cast(cast(act.Reading as numeric(18,6)) as char),'--') 
-END,
-
+Case when act.Pupilcount = '0' or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  isnull(act.Reading,'--')  END,
  'Science' =
-Case when act.Pupilcount = '0' or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  
---isnull(act.Science,'--')  
-isnull(cast(cast(act.Science as numeric(18,6)) as char),'--') 
-END,
-
+Case when act.Pupilcount = '0' or act.PupilCount is null then '--' when cast(act.Pupilcount as int) < 6 then '*' else  isnull(act.Science,'--')  END,
 'Composite' =
-Case when act.Pupilcount = '0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' else  
---isnull(act.Composite,'--')  
-isnull(cast(cast(act.Composite as numeric(18,6)) as char),'--') 
-END,
+Case when act.Pupilcount = '0' or act.PupilCount is null  then '--' when cast(act.Pupilcount as int) < 6 then '*' else  isnull(act.Composite,'--')  END,
 
 'Enrollment' = 'NA',
 'Perc Tested' = 'NA'
@@ -243,3 +226,6 @@ and k.Agencytype in ('03','04','4C','49','XX')
 
 --) a
 --where year = '2002' and fullkey = 'XXXXXXXXXXXX' and race = '8' and sex = '9'
+
+
+
