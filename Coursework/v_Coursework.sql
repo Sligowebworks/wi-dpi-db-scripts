@@ -15,89 +15,99 @@ GO
 CREATE VIEW [dbo].[v_COURSEWORK]
 AS
 SELECT 
-keys.year, Keys.fullkey, 
-(cast((Keys.Year - 1) AS char(4)) + '-' + cast(right(Keys.Year,2) AS char(2))) AS 'PriorYear', 
-'DistState' = CASE WHEN Keys.Fullkey = 'XXXXXXXXXXXX' THEN 'WI Public Schools' Else ' ' +  districts.Name END, 
-'SchooltypeLabel' = 'Summary', 
-'OrgLevelLabel' = CASE WHEN Keys.Fullkey = 'XXXXXXXXXXXX' THEN 'WI Public Schools' Else ' ' + districts.Name END, 
-'OrgSchoolTypeLabel' = (case when keys.fullkey = 'XXXXXXXXXXXX' then ' State' when right(keys.fullkey,1) = 'X' then '  District' else '   Current School' end) + ': Summary', 
-'OrgSchoolTypeLabelAbbr' = (case when keys.fullkey = 'XXXXXXXXXXXX' then ' State' when right(keys.fullkey,1) = 'X' then '  District' else '   Current School' end) + ': Summary', 
-'Name' = CASE WHEN Keys.Fullkey = 'XXXXXXXXXXXX' THEN ' State' Else ' ' +  districts.Name END, 
-keys.LinkedDistrictName, 
-keys.LinkedName, 
-Keys.YearFormatted,
-'AgencyType' = left(right(Keys.fullkey,6),2),
-Keys.CESA,
-Keys.County, 
-Keys.ConferenceKey, 
-Keys.[District Number],
-Keys.[School Number],
-Keys.[District Name],
-Keys.[School Name],
-Keys.[GradeLabel], 
-Keys.[RaceLabel],
-Keys.[SexLabel],
-Keys.[StudentGroupLabel],
-Keys.[Student Group],
-Keys.[schooltype],
-Keys.[agencykey],
-Keys.[charter],
-Keys.[SexCode],
+	keys.[year]
+  ,keys.[YearFormatted]
+  ,keys.[fullkey]
+  ,keys.[agencykey]
+  ,keys.[AgencyType]
+  ,keys.[CESA]
+  ,keys.[County]
+  ,keys.[ConferenceKey]
+  ,keys.[schooltype]
+  ,keys.[RollupSchooltype]
+  ,keys.[District Number]
+  ,keys.[School Number]
+  ,keys.[charter]
+  ,keys.[OrgLevelLabel]
+  ,keys.[OrgSchoolTypeLabel]
+  ,keys.[OrgSchoolTypeLabelAbbr]
+  ,keys.[Name]
+  ,keys.[District Name]
+  ,keys.[School Name]
+  ,keys.[Grade]
+  ,keys.[GradeCode]
+  ,keys.[GradeLabel]
+  ,keys.[GradeShortLabel]
+  ,keys.[Race]
+  ,keys.[RaceCode]
+  ,keys.[RaceLabel]
+  ,keys.[RaceShortLabel]
+  ,keys.[Sex]
+  ,keys.[SexCode]
+  ,keys.[SexLabel]
+  ,keys.[DisabilityCode]
+  ,keys.[DisabilityLabel]
+  ,keys.[ShortDisabilityLabel]
+  ,keys.[Student Group]
+  ,keys.[StudentGroupLabel]
+  ,keys.[LinkedName]
+  ,keys.[LinkedDistrictName]
+  ,keys.[LinkedSchoolName]
+  ,keys.[Total Enrollment PreK-12]
+  ,keys.[enrollment]
+  ,keys.[suppressed]
 
-Keys.SubjectDescription as 'Subject',
-Keys.SubjectID,
-Keys.Topic,
-Keys.CourseDescription as 'Course',
-Keys.CourseTypeID,
-Keys.CourseType,
-Keys.WMASID1,
-Keys.WMAS_Description1,
-Keys.Grade, Keys.GradeName, keys.Sex, Keys.SexDesc, 
-'Advanced' = Case Keys.Advanced when 'Y' then 'YES' ELSE 'NO' END,
-isnull(cast(E.enrollment as char(18)),'0') as enrollment,
---"# Who Took Course" = isnull(cast(Coursework.Enrollment as char(18)),'0'),
-"# Who Took Course" = (case when C.Description is null then 'NA' else isnull(cast(Coursework.Enrollment as char(18)),'0') end),
+  ,course_keys.CourseTypeID
+  ,course_keys.WMASID1
 
-"% Who Took Course" = CASE WHEN E.Enrollment > 0 THEN
-	CASE WHEN E.SUPPRESSED = -10 then '*' 
-	else
-		Isnull(cast(((isnull(cast(Coursework.Enrollment as numeric(18)),0)/E.Enrollment)*100) as char(18)),'0') 
+  , "Course" = C.Description
+  
+, "# Who Took Course" = (case when C.Description is null then 'NA' else isnull(cast(Coursework.Enrollment as char(18)),'0') end)
+
+, "% Who Took Course" = 
+	CASE WHEN Keys.Enrollment > 0 THEN
+		CASE WHEN keys.suppressed = -10 then '*' 
+		ELSE Isnull(cast(((isnull(cast(Coursework.Enrollment as numeric(18)),0)/Keys.Enrollment)*100) as char(18)),'0') 
+		END
+	ELSE '0'
 	END
-
-ELSE
-	'0'
-END
-FROM v_Coursework_Keys Keys
-LEFT OUTER JOIN 
-ENROLLMENT E on 
-(Keys.Year = E.Year AND 
-Keys.Fullkey = E.Fullkey and 
-Keys.grade = E.Grade and
-Keys.Sex = E.Sex and 
-E.Race = '9' )
-LEFT OUTER JOIN
+FROM 
+v_Template_Keys_WWoDis_tblAgencyFull keys
+	CROSS JOIN
+ (
+	(Select SubjectID, Topic, Advanced, Description as 'CourseType', TypeID as 'CourseTypeID' ,WMASID1,WMASID2  
+	 FROM Courses WHERE year = (SELECT max(year) from courses)
+		UNION ALL
+	SELECT DISTINCT  SubjectID, 'ALL' as Topic,  'N' as Advanced, 'Total' as Description, 5 as TypeID, 14 as WMASID1, 0 as WMASID2  
+	FROM Courses where year = (SELECT max(year) from courses)
+		UNION ALL
+	SELECT 'ALL' as SubjectID, 'ALL' as Topic,  'N' as Advanced, 'Total' as Description,5 as TypeID, 14 as WMASID1, 0 as WMASID2
+)
+) course_keys
+	LEFT OUTER JOIN 
 Coursework ON 
-(Keys.Year = Coursework.Year AND 
-Keys.Fullkey = Coursework.Fullkey AND
-Keys.SubjectID = Coursework.SubjectID AND
-Keys.Topic = Coursework.Topic AND
-(
-(keys.grade = '94' and Coursework.Grade = '94') or 
-(keys.grade = '40' and Coursework.Grade = '06') or 
-(keys.grade = '44' and Coursework.Grade = '07') or 
-(keys.grade = '48' and Coursework.Grade = '08') or 
-(keys.grade = '52' and Coursework.Grade = '09') or 
-(keys.grade = '56' and Coursework.Grade = '10') or 
-(keys.grade = '60' and Coursework.Grade = '11') or 
-(keys.grade = '64' and Coursework.Grade = '12') 
-)
-and Keys.Sex = Coursework.Sex
-)
-LEFT OUTER JOIN
-    DISTRICTS ON (Districts.Year = Keys.Year AND 
- LEFT(Districts.Fullkey, 6) = LEFT(Keys.FullKey, 6)) 
--- jdj
-left outer join courses C on
+	Keys.Year = Coursework.Year 
+	AND Keys.Fullkey = Coursework.Fullkey
+	AND course_keys.SubjectID = Coursework.SubjectID
+	AND course_keys.Topic = Coursework.Topic
+	AND (
+		(keys.grade = '94' AND Coursework.Grade = '94') OR 
+		(keys.grade = '40' AND Coursework.Grade = '06') OR 
+		(keys.grade = '44' AND Coursework.Grade = '07') OR 
+		(keys.grade = '48' AND Coursework.Grade = '08') OR 
+		(keys.grade = '52' AND Coursework.Grade = '09') OR 
+		(keys.grade = '56' AND Coursework.Grade = '10') OR 
+		(keys.grade = '60' AND Coursework.Grade = '11') OR 
+		(keys.grade = '64' AND Coursework.Grade = '12') 
+	)
+	AND Keys.Sex = Coursework.Sex
+	LEFT OUTER JOIN 
+Courses C on
 Keys.Year = C.Year and
-Keys.SubjectID = C.SubjectID and
-Keys.Topic = C.Topic
+course_keys.SubjectID = C.SubjectID and
+course_keys.Topic = C.Topic
+
+WHERE 
+Keys.Race = '9' 
+AND Keys.disabilityCode = 9
+--Keys.Grade in (40,44,48,52,56,60,64,94)
