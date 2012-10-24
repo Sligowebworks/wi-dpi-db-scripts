@@ -8,10 +8,10 @@ from (
 
 SELECT
 [Year], [StaffKey], [WorkAgencyKey],
-'LinkSubject' = (case [ESAECoreCategory] when 'LA' then 'ELA' when 'MA' then 'MATH' when 'SC' then 'SCI' when 'SS' then 'SOC' when 'FL' then 'FLANG' when 'AR' then 'ARTS' else 'XX' end),
+'LinkSubject' = (case [WMASCode] when 'LA' then 'ELA' when 'MA' then 'MATH' when 'SC' then 'SCI' when 'SS' then 'SOC' when 'FL' then 'FLANG' when 'AR' then 'ARTS' else 'XX' end),
 [WiscLicenseStatus], [ESEAHighlyQualified], [FTE]
 FROM [wisconsin].[dbo].[tblTQAss]
-where rtrim([ESAECoreCategory]) in ('LA','MA','SC','SS','FL','AR')
+where rtrim([WMASCode]) in ('LA','MA','SC','SS','FL','AR')
 
 union all
 

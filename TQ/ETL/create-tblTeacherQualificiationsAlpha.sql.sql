@@ -45,7 +45,11 @@ sum(case [WiscLicenseStatus] when 'U' then 1 else 0 end) as [LicenseNo],
 count([ESEAHighlyQualified]) as EHQTotal,
 sum(case [ESEAHighlyQualified] when 'Y' then 1 else 0 end) as [EHQYes],
 sum(case [ESEAHighlyQualified] when 'N' then 1 else 0 end) as [EHQNo],
-sum([FTE]) as 'FTE',
+--sum([FTE]) as 'FTE',
+sum(
+  CASE WHEN (LinkSubject = 'SOC' AND ESEAHighlyQualified = 'N') THEN 0
+  ELSE [FTE] END
+      ) as 'FTE',
 sum(case [WiscLicenseStatus] when 'F' then cast([FTE] as decimal(5,2)) else 0 end) as 'FTELicenseFull',
 sum(case [WiscLicenseStatus] when 'E' then cast([FTE] as decimal(5,2)) else 0 end) as 'FTELicenseEmer',
 sum(case [WiscLicenseStatus] when 'U' then cast([FTE] as decimal(5,2)) else 0 end) as 'FTELicenseNo',
