@@ -169,7 +169,7 @@ k.LinkSubjectCode, k.LinkSubjectLabel,
 -- --
 'FTE_ESEA_HQYes' = isnull([FTE_ESEA_HQYes],0),
 'EHQYesFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE_ESEA_HQYes],0) / isnull([FTE_Total],0)) * 100) end) as char) end,
-'EHQNoFTE' = isnull([FTE_ESEA_HQNo],0),
+'FTE_ESEA_HQNo' = isnull([FTE_ESEA_HQNo],0),
 'EHQNoFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE_ESEA_HQNo],0) / isnull([FTE_Total],0)) * 100) end) as char) end,
 --
 'FTE_ESEACore_HQYes' = isnull([FTE_ESEACore_HQYes],0),
