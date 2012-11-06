@@ -7,9 +7,13 @@
 
 select [Year], [FullKey], [SchoolType], [LinkSubject], [Race], [Gender],
 'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]),
-'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-'FTEEHQNo' = sum(FTEEHQNo),
+'FTE_Total' = sum([FTE]),
+'ESEA_Core_FTE_Total' = sum([ESEACoreFTE]),
+'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo),
+'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]),
+'FTE_ESEACore_HQYes' = sum([FTE_ESEACoreHQYes]),
+'FTE_ESEACore_HQNo' = sum([FTE_ESEACoreHQNo]),
 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'LocalExperience' = sum([LocalExperience]), 'TotalExperience' = sum([TotalExperience]),
 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), 'DegreeHighSchool' = sum([DegreeHighSchool]), 'DegreeAssoc' = sum([DegreeAssoc]),
@@ -24,8 +28,11 @@ from (
 	-- must set schooltype to '9' to pull school rows on dist/state view
 	[Year], [FullKey], [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE])
+    , 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo),
+    'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]),
+    'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -34,7 +41,7 @@ from (
 	-- district-level records use schooltype 0 - grouped in only for district summaries
 	schooltype <> '0'
 
-	-- test
+	-- test'ESEACoreFTE'= sum([ESEACoreFTE]),
 	--and linksubject = 'SUMALL'
 	-- and district = '4634'
 
@@ -54,8 +61,8 @@ from (
 	-- must set schooltype to '9' to pull school rows on dist/state view
 	[Year], [FullKey], [StaffKey], [SchoolType], [LinkSubject], [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -83,8 +90,8 @@ from (
 	select
 	[Year], [FullKey], [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -113,8 +120,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], '9' as [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -142,8 +149,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -171,8 +178,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], '9' as [Race], [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -201,8 +208,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -230,8 +237,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], [SchoolType], [LinkSubject], [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -259,8 +266,8 @@ from (
 	select
 	[Year], 'Fullkey' = left([FullKey],6) + '03XXXX', [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -291,8 +298,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], '9' as [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -321,8 +328,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -351,8 +358,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], '9' as [SchoolType], [LinkSubject], '9' as [Race], [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -382,8 +389,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -412,8 +419,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], [SchoolType], [LinkSubject], [Race], '9' as [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
@@ -442,8 +449,8 @@ from (
 	select
 	[Year], 'Fullkey' = 'XXXXXXXXXXXX', [StaffKey], [SchoolType], [LinkSubject], '9' as [Race], [Gender],
 	'LicenseTotal' = sum([LicenseTotal]), 'LicenseFull' = sum([LicenseFull]), 'LicenseEmer' = sum([LicenseEmer]), 'LicenseNo' = sum([LicenseNo]), 'EHQTotal' = sum([EHQTotal]),
-	'EHQYes' = sum([EHQYes]), 'EHQNo' = sum([EHQNo]), 'FTE' = sum([FTE]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTEEHQYes' = sum(FTEEHQYes),
-	'FTEEHQNo' = sum(FTEEHQNo), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
+	'ESEAHQYes' = sum([ESEAHQYes]), 'ESEAHQNo' = sum([ESEAHQNo]), 'FTE' = sum([FTE]), 'ESEACoreFTE'= sum([ESEACoreFTE]), 'FTE_ESEACoreHQYes' = sum([FTE_ESEACoreHQYes]), 'FTE_ESEACoreHQNo' = sum([FTE_ESEACoreHQNo]), 'FTELicenseFull' = sum(FTELicenseFull), 'FTELicenseEmer' = sum(FTELicenseEmer), 'FTELicenseNo' = sum(FTELicenseNo), 'FTE_ESEA_HQYes' = sum([FTE_ESEA_HQYes]),
+	'FTE_ESEA_HQNo' = sum([FTE_ESEA_HQNo]), 'FTE5YearsOrMoreLocal' = sum([FTE5YearsOrMoreLocal]),
 	'FTE5YearsOrMoreTotal' = sum([FTE5YearsOrMoreTotal]), 'FTEDegreeMastersOrHigher' = sum([FTEDegreeMastersOrHigher]), [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast],
 	[Degree6YrSpec], [DegreeDoc], [DegreeOther], [DegreeN]
 	from tblTeacherQualificationsAlpha
