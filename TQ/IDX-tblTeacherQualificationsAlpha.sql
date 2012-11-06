@@ -1,0 +1,22 @@
+CREATE  CLUSTERED  INDEX [AllClustered] ON [dbo].[tblTeacherQualificationsAlpha](
+  [Year]
+, [agencykey]
+, [FullKey]
+, [District]
+, [School]
+, [SchoolType]
+, [LinkSubject]
+, [Race]
+, [Gender]
+, [LicenseTotal]
+, [LicenseFull]
+, [LicenseEmer]
+, [LicenseNo]
+, [EHQTotal]
+, [FTE_ESEA_HQYes]
+, [FTE_ESEA_HQNo]
+) WITH  FILLFACTOR = 100 ON [PRIMARY]
+
+GRANT  SELECT  ON [dbo].[tblTeacherQualificationsAlpha]  TO [public]
+
+GRANT  SELECT  ON [dbo].[tblTeacherQualificationsAlpha]  TO [netwisco]
