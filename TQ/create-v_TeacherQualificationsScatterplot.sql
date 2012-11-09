@@ -11,6 +11,7 @@ GO
 
 
 
+
 CREATE view [dbo].[v_TeacherQualificationsScatterplot] as
 
 -- this is v_TeacherQualificationsScatterplotKeys40.sql - derived from v_Template_Keys_WithSchooltypes
@@ -25,7 +26,9 @@ SELECT [Year], [YearFormatted], [fullkey], [agencykey], [AgencyType], [CESA], [C
 [LicenseFullFTEPercentage], [LicenseEmerFTEPercentage], [LicenseNoFTEPercentage], [LocalExperience5YearsOrMoreFTEPercentage], [TotalExperience5YearsOrMoreFTEPercentage],
 [DegreeMastersOrHigherFTEPercentage], [FTETotal], [FTELicenseFull], [LicenseEmerFTE], [LicenseNoFTE], [EHQYesFTE], [EHQYesFTEPercentage], [EHQNoFTE], [EHQNoFTEPercentage],
 [LocalExperience5YearsOrLessFTE], [LocalExperience5YearsOrMoreFTE], [TotalExperience5YearsOrLessFTE], [TotalExperience5YearsOrMoreFTE], [DegreeMastersOrHigherFTE], [LicenseCountTotal], [LicenseCountFull],
-[LicenseCountEmer], [LicenseCountNo], [EHQCountTotal], [EHQCountYes], [EHQCountNo], [LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast], [Degree6YrSpec],
+[LicenseCountEmer], [LicenseCountNo], [EHQCountTotal]
+--, [EHQCountYes], [EHQCountNo],
+[LocalExperience], [TotalExperience], [DegreeHighSchool], [DegreeAssoc], [DegreeBach], [DegreeMast], [Degree6YrSpec],
 [DegreeDoc], [DegreeOther], [DegreeN]
 
 from (
@@ -172,23 +175,23 @@ from (
 			k.RelateToKey = 'Hsp' or k.RelateToKey = 'Ntv' or k.RelateToKey = 'Wht') and cast(RelateToValue as decimal(18,9)) > 100 then '100'
 		else cast(cast(isnull(RelateToValue,0) as decimal(18,9)) as char) end) as char)
 
-	, 'LicenseFullFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTELicenseFull],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'LicenseEmerFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTELicenseEmer],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'LicenseNoFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTELicenseNo],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'LocalExperience5YearsOrMoreFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTE5YearsOrMoreLocal],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'TotalExperience5YearsOrMoreFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTE5YearsOrMoreTotal],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'DegreeMastersOrHigherFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTEDegreeMastersOrHigher],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'FTETotal' = isnull([FTE],0)
+	, 'LicenseFullFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTELicenseFull],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'LicenseEmerFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTELicenseEmer],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'LicenseNoFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTELicenseNo],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'LocalExperience5YearsOrMoreFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE5YearsOrMoreLocal],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'TotalExperience5YearsOrMoreFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE5YearsOrMoreTotal],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'DegreeMastersOrHigherFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTEDegreeMastersOrHigher],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'FTETotal' = isnull([FTE_Total],0)
 	, 'FTELicenseFull' = isnull([FTELicenseFull],0)
 	, 'LicenseEmerFTE' = isnull([FTELicenseEmer],0)
 	, 'LicenseNoFTE' = isnull([FTELicenseNo],0)
-	, 'EHQYesFTE' = isnull([FTEEHQYes],0)
-	, 'EHQYesFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTEEHQYes],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'EHQNoFTE' = isnull([FTEEHQNo],0)
-	, 'EHQNoFTEPercentage' = case cast(isnull([FTE],0) as float) when 0 then '--' else cast((case isnull([FTE],0) when 0 then 0 else ((isnull([FTEEHQNo],0) / isnull([FTE],0)) * 100) end) as char) end
-	, 'LocalExperience5YearsOrLessFTE' = (case isnull([FTE],0) when 0 then 0 else ([FTE] - isnull([FTE5YearsOrMoreLocal],0)) end)
+	, 'EHQYesFTE' = isnull([FTE_ESEA_HQYes],0)
+	, 'EHQYesFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE_ESEA_HQYes],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'EHQNoFTE' = isnull([FTE_ESEA_HQNo],0)
+	, 'EHQNoFTEPercentage' = case cast(isnull([FTE_Total],0) as float) when 0 then '--' else cast((case isnull([FTE_Total],0) when 0 then 0 else ((isnull([FTE_ESEA_HQNo],0) / isnull([FTE_Total],0)) * 100) end) as char) end
+	, 'LocalExperience5YearsOrLessFTE' = (case isnull([FTE_Total],0) when 0 then 0 else ([FTE_Total] - isnull([FTE5YearsOrMoreLocal],0)) end)
 	, 'LocalExperience5YearsOrMoreFTE' = isnull([FTE5YearsOrMoreLocal],0)
-	, 'TotalExperience5YearsOrLessFTE' = (case isnull([FTE],0) when 0 then 0 else ([FTE] - isnull([FTE5YearsOrMoreTotal],0)) end)
+	, 'TotalExperience5YearsOrLessFTE' = (case isnull([FTE_Total],0) when 0 then 0 else ([FTE_Total] - isnull([FTE5YearsOrMoreTotal],0)) end)
 	, 'TotalExperience5YearsOrMoreFTE' = isnull([FTE5YearsOrMoreTotal],0)
 	, 'DegreeMastersOrHigherFTE' = isnull([FTEDegreeMastersOrHigher],0)
 	, 'LicenseCountTotal' = isnull([LicenseTotal],0)
@@ -196,8 +199,8 @@ from (
 	, 'LicenseCountEmer' = isnull([LicenseEmer],0)
 	, 'LicenseCountNo' = isnull([LicenseNo],0)
 	, 'EHQCountTotal' = isnull([EHQTotal],0)
-	, 'EHQCountYes' = isnull([EHQYes],0)
-	, 'EHQCountNo' = isnull([EHQNo],0)
+	--, 'EHQCountYes' = isnull([EHQYes],0)
+	--, 'EHQCountNo' = isnull([EHQNo],0)
 	, 'LocalExperience' = isnull([LocalExperience],0)
 	, 'TotalExperience' = isnull([TotalExperience],0)
 	, 'DegreeHighSchool' = isnull([DegreeHighSchool],0)
@@ -287,6 +290,7 @@ this part of the where statement is for test purposes only - un-commenting it gi
 	--order by k.year, k.fullkey, k.schooltypelabel, k.racecode, k.sexcode, k.gradecode, k.linksubjectcode
 
 ) x
+
 
 
 
